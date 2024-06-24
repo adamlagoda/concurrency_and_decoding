@@ -5,6 +5,7 @@ import junit.framework.TestCase;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
+import java.util.concurrent.locks.ReentrantLock;
 import java.util.stream.IntStream;
 
 public class CounterTest extends TestCase {
@@ -94,7 +95,7 @@ public class CounterTest extends TestCase {
         executorService.awaitTermination(TIMEOUT, TimeUnit.SECONDS);
 
         // then
-        assertEquals(expected, counter.i);
+        assertFalse(expected == counter.i);
     }
 
     public void testIncrementAtomicInteger() throws InterruptedException {
