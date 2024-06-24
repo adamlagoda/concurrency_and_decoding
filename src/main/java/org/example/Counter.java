@@ -1,10 +1,13 @@
 package org.example;
 
+import java.util.concurrent.atomic.AtomicInteger;
+
 public class Counter {
     int i = 0;
     volatile int j = 0;
-    volatile boolean volatileLock = true;
-    boolean nonVolatileLock = true;
+    volatile boolean volatileFlag = true;
+
+    AtomicInteger k = new AtomicInteger(0);
 
     public void increment() {
         ++i;
@@ -19,18 +22,11 @@ public class Counter {
     }
 
     public void incrementWithVolatileLock() {
-        while (!volatileLock) {
+        while (!volatileFlag) {
+            Thread.onSpinWait();
         }
-        volatileLock = false;
+        volatileFlag = false;
         increment();
-        volatileLock = true;
-    }
-
-    public void incrementWithNonVolatileLock() {
-        while (!nonVolatileLock) {
-        }
-        nonVolatileLock = false;
-        increment();
-        nonVolatileLock = true;
+        volatileFlag = true;
     }
 }
